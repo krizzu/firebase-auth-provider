@@ -1,0 +1,33 @@
+[versions]
+kotlin = "1.8.22"
+publish = "0.25.3"
+ktor = "2.3.1"
+firebase = "9.2.0"
+
+
+[libraries]
+ktor-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
+firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase" }
+logger = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
+
+# sample server deps
+ktor-core = { module = "io.ktor:ktor-server-core-jvm", version.ref = "ktor" }
+ktor-contentNegiotiation = { module = "io.ktor:ktor-server-content-negotiation-jvm", version.ref = "ktor" }
+ktor-serialization = { module = "io.ktor:ktor-serialization-kotlinx-json-jvm", version.ref = "ktor" }
+ktor-netty = { module = "io.ktor:ktor-server-netty-jvm", version.ref = "ktor" }
+ktor-logger = { module = "ch.qos.logback:logback-classic", version = "1.3.8" }
+ktor-auth-jwt = { module = "io.ktor:ktor-server-auth-jwt", version.ref = "ktor" }
+ktor-cors = { module = "io.ktor:ktor-server-cors", version.ref = "ktor" }
+
+
+[bundles]
+sample-server = [
+    "ktor-core",
+    "ktor-auth",
+    "ktor-netty",
+    "ktor-logger",
+    "ktor-auth-jwt",
+    "ktor-serialization",
+    "ktor-contentNegiotiation",
+    "ktor-cors"
+]

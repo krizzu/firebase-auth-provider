@@ -1,0 +1,9 @@
+{
+  "extends": ["react-app", "plugin:prettier/recommended" ],
+  "rules": {
+    "no-console": "error",
+    "react-hooks/exhaustive-deps": "off",
+    "no-dupe-keys": "error",
+    "@typescript-eslint/no-unused-vars": "error"
+  }
+}
