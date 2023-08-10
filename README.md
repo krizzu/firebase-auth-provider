@@ -4,7 +4,14 @@ Ktor 2.0 authentication provider for Firebase Auth module.
 
 ## Download
 
-todo
+```kotlin
+repositories {
+  mavenCentral()
+}
+dependencies {
+  implementation("com.kborowy:firebase-auth-provider:1.0.0")
+}
+```
 
 ## Usage
 
