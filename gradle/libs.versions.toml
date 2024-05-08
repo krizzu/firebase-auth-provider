@@ -1,6 +1,6 @@
 [versions]
 kotlin = "1.9.23"
-publish = "0.25.3"
+publish = "0.28.0"
 ktor = "2.3.10"
 firebase = "9.2.0"
 
