@@ -3,8 +3,13 @@ package com.kborowy.authprovider.firebase
 import io.ktor.http.auth.AuthScheme
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.http.parsing.ParseException
-import io.ktor.server.auth.*
-import io.ktor.server.response.*
+import io.ktor.server.auth.AuthenticationConfig
+import io.ktor.server.auth.AuthenticationContext
+import io.ktor.server.auth.AuthenticationFailedCause
+import io.ktor.server.auth.AuthenticationProvider
+import io.ktor.server.auth.UnauthorizedResponse
+import io.ktor.server.auth.parseAuthorizationHeader
+import io.ktor.server.response.respond
 
 internal class FirebaseAuthProvider(config: FirebaseAuthConfig) : AuthenticationProvider(config) {
 

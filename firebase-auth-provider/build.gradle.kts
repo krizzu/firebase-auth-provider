@@ -1,12 +1,10 @@
-import com.vanniktech.maven.publish.SonatypeHost
-
 plugins {
     kotlin("jvm")
-    id("com.vanniktech.maven.publish").version(libs.versions.publish.get().toString())
+    id("com.vanniktech.maven.publish").version(libs.versions.publish.get())
 }
 
 dependencies {
-    api(libs.firebase.admin)
+    implementation(libs.firebase.admin)
     implementation(libs.ktor.auth)
     implementation(libs.logger)
 }

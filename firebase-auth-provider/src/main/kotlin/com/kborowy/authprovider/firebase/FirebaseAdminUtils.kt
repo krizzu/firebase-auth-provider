@@ -5,7 +5,6 @@ import com.google.firebase.FirebaseApp
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
-import com.google.firebase.auth.FirebaseToken
 import org.slf4j.LoggerFactory
 import java.io.File
 
@@ -26,11 +25,22 @@ internal class FirebaseAdminUtils(adminFile: File) {
     }
 
     fun authenticateToken(token: String): FirebaseToken? {
-        if (app == null) {
-            throw Exception("FirebaseAdminUtils need to be initialized first!")
-        }
+        requireNotNull(app) { "FirebaseAdminUtils need to be initialized first!" }
+
         return try {
-            FirebaseAuth.getInstance(app).verifyIdToken(token) ?: null
+            FirebaseAuth.getInstance(app).verifyIdToken(token)
+                ?.let { adminToken ->
+                    adminToken.claims
+                    FirebaseToken(
+                        uid = adminToken.uid,
+                        issuer = adminToken.issuer,
+                        name = adminToken.name,
+                        picture = adminToken.picture,
+                        email = adminToken.email,
+                        claims = adminToken.claims,
+                        isEmailVerified = adminToken.isEmailVerified
+                    )
+                }
         } catch (e: FirebaseAuthException) {
             logger.warn(e.message)
             null
