@@ -22,3 +22,5 @@ To run sample project, you need a [Firebase project](https://console.firebase.go
 4. Copy `firebaseConfig` content from displayed window
 5. Paste the content into `web/admin.json` file, making sure it's valid JSON (double quotes around keys, remove trailing
    semicolon etc.)
+6. Install dependencies via `yarn` in `web/` directory
+7. Start project via `yarn start`
