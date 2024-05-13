@@ -9,7 +9,7 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation("com.kborowy:firebase-auth-provider:1.1.0")
+  implementation("com.kborowy:firebase-auth-provider:1.1.1")
 }
 ```
 
