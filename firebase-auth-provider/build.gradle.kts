@@ -4,7 +4,10 @@ plugins {
 }
 
 dependencies {
-    implementation(libs.firebase.admin)
+    implementation(libs.firebase.admin) {
+        exclude("com.google.guava")
+    }
+    implementation(libs.firebase.admin.guavaWorkaround)
     implementation(libs.ktor.auth)
     implementation(libs.logger)
 }

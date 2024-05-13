@@ -8,6 +8,7 @@ firebase = "9.2.0"
 [libraries]
 ktor-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }
 firebase-admin = { module = "com.google.firebase:firebase-admin", version.ref = "firebase" }
+firebase-admin-guavaWorkaround = { module = "com.google.guava:guava", version = "33.2.0-jre" }
 logger = { module = "org.slf4j:slf4j-api", version = "2.0.7" }
 
 # sample server deps
