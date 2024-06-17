@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm")
-    id("com.vanniktech.maven.publish").version(libs.versions.publish.get())
+    id("com.vanniktech.maven.publish")
 }
 
 dependencies {

@@ -1,6 +1,6 @@
 # Firebase Auth Provider
 
-Ktor 2.0 authentication provider for Firebase Auth module.
+Ktor authentication provider for Firebase Auth module.
 
 ## Download
 
@@ -9,7 +9,7 @@ repositories {
   mavenCentral()
 }
 dependencies {
-  implementation("com.kborowy:firebase-auth-provider:1.1.1")
+  implementation("com.kborowy:firebase-auth-provider:1.1.2")
 }
 ```
 
