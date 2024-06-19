@@ -2,6 +2,7 @@ package com.kborowy.authprovider.firebase
 
 import com.google.auth.oauth2.GoogleCredentials
 import com.google.firebase.FirebaseApp
+import com.google.firebase.FirebaseApp.DEFAULT_APP_NAME
 import com.google.firebase.FirebaseOptions
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -21,7 +22,7 @@ internal class FirebaseAdminUtils(adminFile: File) {
     }
 
     fun init() {
-        app = FirebaseApp.initializeApp(firebaseOptions)
+        app = initializeFirebaseApp(firebaseOptions)
     }
 
     fun authenticateToken(token: String): FirebaseToken? {
@@ -44,6 +45,16 @@ internal class FirebaseAdminUtils(adminFile: File) {
         } catch (e: FirebaseAuthException) {
             logger.warn(e.message)
             null
+        }
+    }
+
+    private fun initializeFirebaseApp(firebaseOptions: FirebaseOptions): FirebaseApp {
+        return try {
+            val instance = FirebaseApp.getInstance()
+            logger.warn("FirebaseApp name $DEFAULT_APP_NAME already exists!")
+            return instance
+        } catch (e: IllegalStateException) {
+            FirebaseApp.initializeApp(firebaseOptions)
         }
     }
 }
