@@ -15,9 +15,7 @@ class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
   var adminFile: File = File("")
     set(f) {
       if (!::utils.isInitialized) {
-        utils = FirebaseAdminUtils(f).apply {
-          init()
-        }
+        utils = FirebaseAdminUtils(f)
       }
     }
 

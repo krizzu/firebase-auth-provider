@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory
 import java.io.File
 
 internal class FirebaseAdminUtils(adminFile: File) {
-    private var app: FirebaseApp? = null
     private val logger = LoggerFactory.getLogger("FirebaseAdmin")
 
     private val firebaseOptions: FirebaseOptions by lazy {
@@ -20,13 +19,11 @@ internal class FirebaseAdminUtils(adminFile: File) {
         }
     }
 
-    fun init() {
-        app = FirebaseApp.initializeApp(firebaseOptions)
+    private val app: FirebaseApp by lazy {
+        FirebaseApp.initializeApp(firebaseOptions)
     }
 
     fun authenticateToken(token: String): FirebaseToken? {
-        requireNotNull(app) { "FirebaseAdminUtils need to be initialized first!" }
-
         return try {
             FirebaseAuth.getInstance(app).verifyIdToken(token)
                 ?.let { adminToken ->
