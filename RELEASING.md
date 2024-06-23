@@ -1,7 +1,7 @@
 # Releasing
 
 1. Update version in `gradle.properties`
-2. Change version in README.md, Download section
-3. Commit changes and create tag (vX.X.X)
-4. Push to repo
-5. Release via `./gradlew publish`
+2. Commit changes ("release vX.X.X") and create tag ("vX.X.X")
+3. Push commit and tag to repo
+4. Release via `./gradlew publish`
+5. Create GH release
