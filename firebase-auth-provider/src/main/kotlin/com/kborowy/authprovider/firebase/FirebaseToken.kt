@@ -11,5 +11,5 @@ data class FirebaseToken(
     val picture: String?,
     val email: String?,
     val claims: Map<String, Any>,
-    val isEmailVerified: Boolean?
+    val isEmailVerified: Boolean
 )
