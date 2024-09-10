@@ -23,9 +23,10 @@ internal class FirebaseAdminUtils(adminFile: File) {
         FirebaseApp.initializeApp(firebaseOptions)
     }
 
-    fun authenticateToken(token: String): FirebaseToken? {
+    suspend fun authenticateToken(token: String): FirebaseToken? {
         return try {
-            FirebaseAuth.getInstance(app).verifyIdToken(token)
+            FirebaseAuth.getInstance(app).verifyIdTokenAsync(token)
+                .await()
                 ?.let { adminToken ->
                     adminToken.claims
                     FirebaseToken(
