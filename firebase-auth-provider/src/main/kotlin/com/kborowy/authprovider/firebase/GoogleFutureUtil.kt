@@ -1,17 +1,17 @@
 package com.kborowy.authprovider.firebase
 
-
-package jetbrains.buildServer.clouds.google.connector
-
 import com.google.api.core.ApiFuture
 import com.google.api.core.ApiFutureCallback
 import com.google.api.core.ApiFutures
-import com.google.common.util.concurrent.*
-import kotlinx.coroutines.*
+import com.google.common.util.concurrent.MoreExecutors
 import java.util.concurrent.ExecutionException
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
+import kotlinx.coroutines.CancellableContinuation
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.suspendCancellableCoroutine
 
 /**
  * Awaits for completion of the future without blocking a thread.
@@ -24,8 +24,10 @@ import kotlin.coroutines.resumeWithException
  * a few small objects will remain in the `ListenableFuture` list of listeners until the future completes. However, the
  * care is taken to clear the reference to the waiting coroutine itself, so that its memory can be released even if
  * the future never completes.
+ *
+ *
+ * based on https://github.com/JetBrains/teamcity-google-agent/blob/master/google-cloud-server/src/main/kotlin/jetbrains/buildServer/clouds/google/connector/ApiFuture.kt
  */
- // https://github.com/JetBrains/teamcity-google-agent/blob/master/google-cloud-server/src/main/kotlin/jetbrains/buildServer/clouds/google/connector/ApiFuture.kt#L27-L52
 suspend fun <T> ApiFuture<T>.await(): T {
     try {
         if (isDone) return get() as T
@@ -44,11 +46,14 @@ suspend fun <T> ApiFuture<T>.await(): T {
 }
 
 private class ContinuationCallback<T>(
-        @Volatile @JvmField var cont: Continuation<T>?
+    @Volatile @JvmField var cont: Continuation<T>?
 ) : ApiFutureCallback<T> {
     override fun onSuccess(result: T?) {
         @Suppress("UNCHECKED_CAST")
         cont?.resume(result as T)
     }
-    override fun onFailure(t: Throwable) { cont?.resumeWithException(t) }
+
+    override fun onFailure(t: Throwable) {
+        cont?.resumeWithException(t)
+    }
 }

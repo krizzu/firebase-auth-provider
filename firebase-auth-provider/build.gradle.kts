@@ -25,6 +25,7 @@ dependencies {
         exclude("com.google.guava")
     }
     implementation(libs.firebase.admin.guavaWorkaround)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(libs.ktor.auth)
     implementation(libs.logger)
 }
