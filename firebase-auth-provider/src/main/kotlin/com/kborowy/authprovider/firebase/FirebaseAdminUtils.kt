@@ -7,13 +7,17 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import org.slf4j.LoggerFactory
 import java.io.File
+import java.io.InputStream
 
-internal class FirebaseAdminUtils(adminFile: File) {
+internal class FirebaseAdminUtils(adminFileStream: InputStream) {
+
+    constructor(adminFile: File) : this(adminFile.inputStream())
+
     private val logger = LoggerFactory.getLogger("FirebaseAdmin")
 
     private val firebaseOptions: FirebaseOptions by lazy {
         FirebaseOptions.builder().run {
-            val credentials = GoogleCredentials.fromStream(adminFile.inputStream())
+            val credentials = GoogleCredentials.fromStream(adminFileStream)
             setCredentials(credentials)
             build()
         }
