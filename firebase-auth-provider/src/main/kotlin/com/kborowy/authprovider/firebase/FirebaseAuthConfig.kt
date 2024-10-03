@@ -3,6 +3,7 @@ package com.kborowy.authprovider.firebase
 import io.ktor.server.auth.AuthenticationFunction
 import io.ktor.server.auth.AuthenticationProvider
 import java.io.File
+import java.io.InputStream
 
 
 class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
@@ -15,6 +16,13 @@ class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
   var adminFile: File = File("")
     set(f) {
       if (!::utils.isInitialized) {
+        utils = FirebaseAdminUtils(f)
+      }
+    }
+
+  var adminInputStream: InputStream? = null
+    set(f) {
+      if (!::utils.isInitialized && f != null) {
         utils = FirebaseAdminUtils(f)
       }
     }

@@ -32,14 +32,11 @@ fun Application.module() {
     }
 
 
-    val firebaseAdminFile = File(
-        Thread.currentThread().contextClassLoader.getResource("admin.json")?.file
-            ?: throw Exception("admin.json file not found in resources")
-    )
+    val firebaseAdminResource = Thread.currentThread().contextClassLoader.getResourceAsStream("admin.json")
 
     install(Authentication) {
         firebase("my-auth") {
-            adminFile = firebaseAdminFile
+            adminInputStream = firebaseAdminResource
             realm = "Sample Server"
 
             validate { token ->
