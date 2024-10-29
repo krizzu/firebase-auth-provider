@@ -62,7 +62,7 @@ fun Application.module() {
 
     routing {
         get("/") {
-            call.respond("Send GET to /secret to know a secret!")
+            call.respond("Send GET to /joke to get a joke!")
         }
 
         authenticate("my-auth") {
