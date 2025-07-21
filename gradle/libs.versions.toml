@@ -7,6 +7,7 @@ coroutines = "1.10.2"
 
 [plugins]
 validator-abi = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.18.1" }
+spotless = { id = "com.diffplug.spotless", version = "6.25.0" }
 
 [libraries]
 ktor-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }

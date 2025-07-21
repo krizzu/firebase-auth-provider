@@ -3,6 +3,7 @@
 ## Prep work
 
 1. Run `./gradlew apiCheck` to check breaking for breaking changes
+2. Run `./gradlew spotlessCheck` to check for styling issues
 
 ## New version
 

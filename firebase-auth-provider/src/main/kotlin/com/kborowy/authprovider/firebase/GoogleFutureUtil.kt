@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 Krzysztof Borowy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.kborowy.authprovider.firebase
 
 import com.google.api.core.ApiFuture
@@ -16,17 +31,17 @@ import kotlinx.coroutines.suspendCancellableCoroutine
 /**
  * Awaits for completion of the future without blocking a thread.
  *
- * This suspending function is cancellable.
- * If the [Job] of the current coroutine is completed while this suspending function is waiting, this function
- * stops waiting for the future and immediately resumes with [CancellationException].
+ * This suspending function is cancellable. If the [Job] of the current coroutine is completed while
+ * this suspending function is waiting, this function stops waiting for the future and immediately
+ * resumes with [CancellationException].
  *
- * Note, that `ListenableFuture` does not support removal of installed listeners, so on cancellation of this wait
- * a few small objects will remain in the `ListenableFuture` list of listeners until the future completes. However, the
- * care is taken to clear the reference to the waiting coroutine itself, so that its memory can be released even if
- * the future never completes.
+ * Note, that `ListenableFuture` does not support removal of installed listeners, so on cancellation
+ * of this wait a few small objects will remain in the `ListenableFuture` list of listeners until
+ * the future completes. However, the care is taken to clear the reference to the waiting coroutine
+ * itself, so that its memory can be released even if the future never completes.
  *
- *
- * based on https://github.com/JetBrains/teamcity-google-agent/blob/master/google-cloud-server/src/main/kotlin/jetbrains/buildServer/clouds/google/connector/ApiFuture.kt
+ * based on
+ * https://github.com/JetBrains/teamcity-google-agent/blob/master/google-cloud-server/src/main/kotlin/jetbrains/buildServer/clouds/google/connector/ApiFuture.kt
  */
 suspend fun <T> ApiFuture<T>.await(): T {
     try {
@@ -45,12 +60,10 @@ suspend fun <T> ApiFuture<T>.await(): T {
     }
 }
 
-private class ContinuationCallback<T>(
-    @Volatile @JvmField var cont: Continuation<T>?
-) : ApiFutureCallback<T> {
+private class ContinuationCallback<T>(@Volatile @JvmField var cont: Continuation<T>?) :
+    ApiFutureCallback<T> {
     override fun onSuccess(result: T?) {
-        @Suppress("UNCHECKED_CAST")
-        cont?.resume(result as T)
+        @Suppress("UNCHECKED_CAST") cont?.resume(result as T)
     }
 
     override fun onFailure(t: Throwable) {

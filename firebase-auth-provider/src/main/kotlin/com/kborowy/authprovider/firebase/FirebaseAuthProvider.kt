@@ -1,3 +1,18 @@
+/*
+ * Copyright 2023 Krzysztof Borowy
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.kborowy.authprovider.firebase
 
 import io.ktor.http.auth.AuthScheme
@@ -17,45 +32,46 @@ internal class FirebaseAuthProvider(config: FirebaseAuthConfig) : Authentication
     private val authenticate = config.authenticate
     private val admin: FirebaseAdminUtils = config.utils
 
-
     override suspend fun onAuthenticate(context: AuthenticationContext) {
-        val authHeader = try {
-            context.call.request.parseAuthorizationHeader()
-        } catch (e: ParseException) {
-            null
-        } ?: let {
-            context.challenge(CHALLENGE, AuthenticationFailedCause.NoCredentials) { challenge, call ->
-                call.respond(createUnauthorizedResponse())
-                challenge.complete()
+        val authHeader =
+            try {
+                context.call.request.parseAuthorizationHeader()
+            } catch (e: ParseException) {
+                null
             }
-            return
-        }
-
-        val principal = (authHeader as? HttpAuthHeader.Single)
-            ?.takeIf { authHeader.authScheme.lowercase() == AuthScheme.Bearer.lowercase() }
-            ?.let { admin.authenticateToken(it.blob) }
-            ?.let { authorizedToken ->
-                authenticate(context.call, authorizedToken)
-            }
-            ?: let {
-                context.challenge(
-                    CHALLENGE,
-                    AuthenticationFailedCause.InvalidCredentials
-                ) { challenge, call ->
-                    call.respond(createUnauthorizedResponse())
-                    challenge.complete()
+                ?: let {
+                    context.challenge(CHALLENGE, AuthenticationFailedCause.NoCredentials) {
+                        challenge,
+                        call ->
+                        call.respond(createUnauthorizedResponse())
+                        challenge.complete()
+                    }
+                    return
                 }
-                return
-            }
+
+        val principal =
+            (authHeader as? HttpAuthHeader.Single)
+                ?.takeIf { authHeader.authScheme.lowercase() == AuthScheme.Bearer.lowercase() }
+                ?.let { admin.authenticateToken(it.blob) }
+                ?.let { authorizedToken -> authenticate(context.call, authorizedToken) }
+                ?: let {
+                    context.challenge(CHALLENGE, AuthenticationFailedCause.InvalidCredentials) {
+                        challenge,
+                        call ->
+                        call.respond(createUnauthorizedResponse())
+                        challenge.complete()
+                    }
+                    return
+                }
 
         context.principal(principal)
     }
 
     private fun createUnauthorizedResponse() =
-        UnauthorizedResponse(HttpAuthHeader.bearerAuthChallenge(scheme = AuthScheme.Bearer, realm = realm))
-
+        UnauthorizedResponse(
+            HttpAuthHeader.bearerAuthChallenge(scheme = AuthScheme.Bearer, realm = realm)
+        )
 }
-
 
 private const val CHALLENGE = "FirebaseAuth"
 
