@@ -1,5 +1,11 @@
 # Releasing
 
+## Prep work
+
+1. Run `./gradlew apiCheck` to check breaking for breaking changes
+
+## New version
+
 1. Update version in `gradle.properties`
 2. Commit changes ("release vX.X.X") and create tag ("vX.X.X")
 3. Push commit and tag to repo

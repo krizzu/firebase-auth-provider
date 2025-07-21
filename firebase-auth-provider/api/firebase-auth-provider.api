@@ -1,0 +1,43 @@
+public final class com/kborowy/authprovider/firebase/FirebaseAuthConfig : io/ktor/server/auth/AuthenticationProvider$Config {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getAdminFile ()Ljava/io/File;
+	public final fun getAdminInputStream ()Ljava/io/InputStream;
+	public final fun getRealm ()Ljava/lang/String;
+	public final fun setAdminFile (Ljava/io/File;)V
+	public final fun setAdminInputStream (Ljava/io/InputStream;)V
+	public final fun setRealm (Ljava/lang/String;)V
+	public final fun validate (Lkotlin/jvm/functions/Function3;)V
+}
+
+public final class com/kborowy/authprovider/firebase/FirebaseAuthProviderKt {
+	public static final fun firebase (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun firebase$default (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
+}
+
+public final class com/kborowy/authprovider/firebase/FirebaseToken {
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Z)V
+	public final fun component1 ()Ljava/lang/String;
+	public final fun component2 ()Ljava/lang/String;
+	public final fun component3 ()Ljava/lang/String;
+	public final fun component4 ()Ljava/lang/String;
+	public final fun component5 ()Ljava/lang/String;
+	public final fun component6 ()Ljava/util/Map;
+	public final fun component7 ()Z
+	public final fun copy (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;Z)Lcom/kborowy/authprovider/firebase/FirebaseToken;
+	public static synthetic fun copy$default (Lcom/kborowy/authprovider/firebase/FirebaseToken;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/util/Map;ZILjava/lang/Object;)Lcom/kborowy/authprovider/firebase/FirebaseToken;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getClaims ()Ljava/util/Map;
+	public final fun getEmail ()Ljava/lang/String;
+	public final fun getIssuer ()Ljava/lang/String;
+	public final fun getName ()Ljava/lang/String;
+	public final fun getPicture ()Ljava/lang/String;
+	public final fun getUid ()Ljava/lang/String;
+	public fun hashCode ()I
+	public final fun isEmailVerified ()Z
+	public fun toString ()Ljava/lang/String;
+}
+
+public final class com/kborowy/authprovider/firebase/GoogleFutureUtilKt {
+	public static final fun await (Lcom/google/api/core/ApiFuture;Lkotlin/coroutines/Continuation;)Ljava/lang/Object;
+}
+

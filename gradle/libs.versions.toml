@@ -5,6 +5,8 @@ ktor = "3.2.2"
 firebase = "9.2.0"
 coroutines = "1.10.2"
 
+[plugins]
+validator-abi = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version = "0.18.1" }
 
 [libraries]
 ktor-auth = { module = "io.ktor:ktor-server-auth", version.ref = "ktor" }

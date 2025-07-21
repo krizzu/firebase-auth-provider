@@ -4,6 +4,7 @@ import org.jetbrains.kotlin.gradle.dsl.KotlinVersion
 plugins {
     kotlin("jvm")
     id("com.vanniktech.maven.publish")
+    alias(libs.plugins.validator.abi)
 }
 
 kotlin {
