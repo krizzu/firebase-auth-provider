@@ -28,7 +28,9 @@ class FirebaseAuthConfig(name: String?, private val firebaseAppName: String? = n
     }
 
     internal var app: (() -> FirebaseApp) = {
-        throw IllegalStateException("FirebaseApp instance not provided.")
+        throw IllegalStateException(
+            "Missing Firebase Auth provider setup. Use 'setup' to initialize it."
+        )
     }
 
     var realm: String = "Ktor Server"
@@ -72,7 +74,7 @@ class FirebaseAuthConfig(name: String?, private val firebaseAppName: String? = n
             }
 
             error(
-                "missing FirebaseApp instance. Provide it by using 'firebaseApp' or 'adminFile' property"
+                "Incorrect Firebase Auth provider setup - Missing FirebaseApp instance. Provide pre-existing one or service account credential file in 'setup' block."
             )
         }
     }
