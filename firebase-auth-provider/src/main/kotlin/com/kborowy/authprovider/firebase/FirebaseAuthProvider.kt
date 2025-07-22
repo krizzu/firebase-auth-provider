@@ -15,6 +15,7 @@
  */
 package com.kborowy.authprovider.firebase
 
+import com.google.firebase.FirebaseApp
 import io.ktor.http.auth.AuthScheme
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.http.parsing.ParseException
@@ -30,7 +31,7 @@ internal class FirebaseAuthProvider(config: FirebaseAuthConfig) : Authentication
 
     private val realm = config.realm
     private val authenticate = config.authenticate
-    private val admin: FirebaseAdminUtils = config.utils
+    private val app: FirebaseApp = config.app()
 
     override suspend fun onAuthenticate(context: AuthenticationContext) {
         val authHeader =
@@ -52,7 +53,7 @@ internal class FirebaseAuthProvider(config: FirebaseAuthConfig) : Authentication
         val principal =
             (authHeader as? HttpAuthHeader.Single)
                 ?.takeIf { authHeader.authScheme.lowercase() == AuthScheme.Bearer.lowercase() }
-                ?.let { admin.authenticateToken(it.blob) }
+                ?.let { app.authenticateToken(token = it.blob) }
                 ?.let { authorizedToken -> authenticate(context.call, authorizedToken) }
                 ?: let {
                     context.challenge(CHALLENGE, AuthenticationFailedCause.InvalidCredentials) {

@@ -43,6 +43,10 @@ import kotlinx.coroutines.suspendCancellableCoroutine
  * based on
  * https://github.com/JetBrains/teamcity-google-agent/blob/master/google-cloud-server/src/main/kotlin/jetbrains/buildServer/clouds/google/connector/ApiFuture.kt
  */
+@Deprecated(
+    "Method should not be exposed in the first place. This will be hidden in next release.",
+    level = DeprecationLevel.WARNING,
+)
 suspend fun <T> ApiFuture<T>.await(): T {
     try {
         if (isDone) return get() as T

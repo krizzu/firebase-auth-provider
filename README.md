@@ -6,36 +6,35 @@
 [![GitHub Release](https://img.shields.io/github/v/release/krizzu/firebase-auth-provider?display_name=release&logo=github)](https://github.com/krizzu/firebase-auth-provider/releases)
 [![GitHub License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
 
-
 Ktor authentication provider for Firebase Auth module.
 
-
-## Download
+## Installation
 
 ```kotlin
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 dependencies {
-  implementation("com.kborowy:firebase-auth-provider:VERSION")
+    implementation("com.kborowy:firebase-auth-provider:VERSION")
 }
 ```
 
 ## Usage
 
-You need to setup [Firebase](https://firebase.google.com/) project
-with [Authentication module](https://firebase.google.com/products/auth) enabled. See [sample project](./sample/README.md) to learn more.
+A [Firebase](https://firebase.google.com/) project
+with [Authentication module](https://firebase.google.com/products/auth) is required.
+See [sample project](./sample/README.md) to learn more.
 
 ```kotlin
 install(Authentication) {
     firebase("my-auth") {
-        adminFile = File("path/to/admin/file.json")
-        realm = "Sample Server"
+        realm = "My Server"
 
-        /**
-         * A decoded and verified Firebase token.
-         * Can be used to get the uid and other user attributes available in the token.
-         */
+        setup {
+            // see configuration below for other options
+            firebaseApp = FirebaseApp.getInstance()
+        }
+
         validate { token ->
             UserIdPrincipal(token.uid)
         }
@@ -43,13 +42,42 @@ install(Authentication) {
 }
 ```
 
-## API
+## Configuration
+
+### Initialization Options
+
+The provider requires Firebase initialization through the `setup` DSL block. You must provide one of these configuration
+options:
+
+- **Existing FirebaseApp instance** (reuse an already initialized Firebase application)
+
+- **Service account JSON file** (path to your Firebase admin SDK credentials file)
+
+- **Service account InputStream** (stream containing your service account credentials)
+
+
+```kotlin
+firebase("fb") {
+    setup {
+        firebaseApp = FirebaseApp.getInstance()
+
+        // OR
+
+        adminFile = File("path/to/admin/file.json")
+
+        // OR
+
+        adminFileStream = myFile.inputStream()
+    }
+}
+```
+
+### Authentication Parameters
 
 | **Param** | **Required** | **Description**                                                                                                                                                                                                                          |
 |-----------|--------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| adminFile | Required | [File](https://docs.oracle.com/javase/8/docs/api/java/io/File.html) instance, pointing to your Service account for your Firebase project. See [sample project](./sample/README.md) to learn more.                                        |
-| validate  | Required | Lambda receiving decoded and verified [FirebaseToken](https://firebase.google.com/docs/reference/admin/java/reference/com/google/firebase/auth/FirebaseToken), expected to return Principal, if user is authorized or null otherwise.    |
-| realm     | Optional | String describing the protected area or the scope of protection. This could be a message like "Access to the staging site" or similar, so that the user knows to which space they are trying to get access to. Defaults to "Ktor Server" |
+| validate  | Required     | Lambda receiving decoded and verified [FirebaseToken](https://firebase.google.com/docs/reference/admin/java/reference/com/google/firebase/auth/FirebaseToken), expected to return Principal, if user is authorized or null otherwise.    |
+| realm     | Optional     | String describing the protected area or the scope of protection. This could be a message like "Access to the staging site" or similar, so that the user knows to which space they are trying to get access to. Defaults to "Ktor Server" |
 
 # License
 

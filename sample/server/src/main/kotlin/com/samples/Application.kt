@@ -19,62 +19,64 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.routing
 
 fun main() {
-  embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
-      .start(wait = true)
+    embeddedServer(Netty, port = 8080, host = "0.0.0.0", module = Application::module)
+        .start(wait = true)
 }
 
 fun Application.module() {
 
-  install(CORS) {
-    anyHost()
-    allowHeader(HttpHeaders.ContentType)
-    allowHeader(HttpHeaders.Authorization)
-  }
-  install(ContentNegotiation) { json() }
-
-  val firebaseAdminResource =
-      Thread.currentThread().contextClassLoader.getResourceAsStream("admin.json")
-
-  install(Authentication) {
-    firebase("my-auth") {
-      adminInputStream = firebaseAdminResource
-      realm = "Sample Server"
-
-      validate { token -> UserIdPrincipal(token.uid) }
+    install(CORS) {
+        anyHost()
+        allowHeader(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.Authorization)
     }
-  }
+    install(ContentNegotiation) { json() }
 
-  val jokes =
-      listOf(
-          """
+    val firebaseAdminResource =
+        Thread.currentThread().contextClassLoader.getResourceAsStream("admin.json")
+
+    install(Authentication) {
+        firebase("my-auth") {
+            realm = "Sample Server"
+
+            setup { adminFileStream = firebaseAdminResource!! }
+
+            validate { token -> UserIdPrincipal(token.uid) }
+        }
+    }
+
+    val jokes =
+        listOf(
+            """
             - What's orange and sounds like a parrot
             - Carrot
         """
-              .trimIndent(),
-          """
+                .trimIndent(),
+            """
             - What do wooden whales eat?
             - Plankton
         """
-              .trimIndent(),
-          """
+                .trimIndent(),
+            """
             - Why did the scarecrow get a medal?
             - He was outstanding in his field
         """
-              .trimIndent())
+                .trimIndent(),
+        )
 
-  routing {
-    get("/") { call.respond("Send GET to /joke to get a joke!") }
+    routing {
+        get("/") { call.respond("Send GET to /joke to get a joke!") }
 
-    authenticate("my-auth") {
-      get("joke") {
-        val principal = call.principal<UserIdPrincipal>()
-        if (principal == null) {
-          call.respond(HttpStatusCode.Unauthorized)
-          return@get
+        authenticate("my-auth") {
+            get("joke") {
+                val principal = call.principal<UserIdPrincipal>()
+                if (principal == null) {
+                    call.respond(HttpStatusCode.Unauthorized)
+                    return@get
+                }
+                val joke = jokes.random()
+                call.respond(joke)
+            }
         }
-        val joke = jokes.random()
-        call.respond(joke)
-      }
     }
-  }
 }

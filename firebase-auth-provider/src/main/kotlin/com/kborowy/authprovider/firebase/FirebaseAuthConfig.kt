@@ -15,33 +15,64 @@
  */
 package com.kborowy.authprovider.firebase
 
+import com.google.firebase.FirebaseApp
 import io.ktor.server.auth.AuthenticationFunction
 import io.ktor.server.auth.AuthenticationProvider
 import java.io.File
 import java.io.InputStream
 
 class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
-    internal lateinit var utils: FirebaseAdminUtils
     internal var authenticate: AuthenticationFunction<FirebaseToken> = {
         throw NotImplementedError("Firebase validate function not specified.")
     }
 
+    internal var app: (() -> FirebaseApp) = {
+        throw IllegalStateException("FirebaseApp instance not provided.")
+    }
+
     var realm: String = "Ktor Server"
+
+    fun setup(block: Setup.() -> Unit) {
+        app = { Setup().apply(block).getApp() }
+    }
+
+    @Deprecated(message = "Use 'setup' instead", level = DeprecationLevel.WARNING)
     var adminFile: File = File("")
-        set(f) {
-            if (!::utils.isInitialized) {
-                utils = FirebaseAdminUtils(f)
-            }
+        set(file) {
+            setup { adminFile = file }
         }
 
+    @Deprecated(message = "Use 'setup' instead", level = DeprecationLevel.WARNING)
     var adminInputStream: InputStream? = null
-        set(f) {
-            if (!::utils.isInitialized && f != null) {
-                utils = FirebaseAdminUtils(f)
-            }
+        set(stream) {
+            setup { adminFileStream = stream }
         }
 
     fun validate(block: AuthenticationFunction<FirebaseToken>) {
         this.authenticate = block
+    }
+
+    class Setup {
+        var firebaseApp: FirebaseApp? = null
+        var adminFile: File? = null
+        var adminFileStream: InputStream? = null
+
+        internal fun getApp(): FirebaseApp {
+            firebaseApp?.let {
+                return it
+            }
+
+            adminFile?.let {
+                return initializeFirebase(it.inputStream())
+            }
+
+            adminFileStream?.let {
+                return initializeFirebase(it)
+            }
+
+            error(
+                "missing FirebaseApp app. Provide it by using 'firebaseApp' or 'adminFile' property"
+            )
+        }
     }
 }
