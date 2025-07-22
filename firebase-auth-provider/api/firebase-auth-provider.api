@@ -1,16 +1,30 @@
 public final class com/kborowy/authprovider/firebase/FirebaseAuthConfig : io/ktor/server/auth/AuthenticationProvider$Config {
-	public fun <init> (Ljava/lang/String;)V
+	public fun <init> (Ljava/lang/String;Ljava/lang/String;)V
+	public synthetic fun <init> (Ljava/lang/String;Ljava/lang/String;ILkotlin/jvm/internal/DefaultConstructorMarker;)V
 	public final fun getAdminFile ()Ljava/io/File;
 	public final fun getAdminInputStream ()Ljava/io/InputStream;
 	public final fun getRealm ()Ljava/lang/String;
 	public final fun setAdminFile (Ljava/io/File;)V
 	public final fun setAdminInputStream (Ljava/io/InputStream;)V
 	public final fun setRealm (Ljava/lang/String;)V
+	public final fun setup (Lkotlin/jvm/functions/Function1;)V
 	public final fun validate (Lkotlin/jvm/functions/Function3;)V
 }
 
+public final class com/kborowy/authprovider/firebase/FirebaseAuthConfig$Setup {
+	public fun <init> (Ljava/lang/String;)V
+	public final fun getAdminFile ()Ljava/io/File;
+	public final fun getAdminFileStream ()Ljava/io/InputStream;
+	public final fun getFirebaseApp ()Lcom/google/firebase/FirebaseApp;
+	public final fun setAdminFile (Ljava/io/File;)V
+	public final fun setAdminFileStream (Ljava/io/InputStream;)V
+	public final fun setFirebaseApp (Lcom/google/firebase/FirebaseApp;)V
+}
+
 public final class com/kborowy/authprovider/firebase/FirebaseAuthProviderKt {
+	public static final fun firebase (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
 	public static final fun firebase (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Lkotlin/jvm/functions/Function1;)V
+	public static synthetic fun firebase$default (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 	public static synthetic fun firebase$default (Lio/ktor/server/auth/AuthenticationConfig;Ljava/lang/String;Lkotlin/jvm/functions/Function1;ILjava/lang/Object;)V
 }
 

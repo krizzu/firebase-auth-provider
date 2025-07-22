@@ -21,7 +21,8 @@ import io.ktor.server.auth.AuthenticationProvider
 import java.io.File
 import java.io.InputStream
 
-class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
+class FirebaseAuthConfig(name: String?, private val firebaseAppName: String? = null) :
+    AuthenticationProvider.Config(name) {
     internal var authenticate: AuthenticationFunction<FirebaseToken> = {
         throw NotImplementedError("Firebase validate function not specified.")
     }
@@ -33,7 +34,7 @@ class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
     var realm: String = "Ktor Server"
 
     fun setup(block: Setup.() -> Unit) {
-        app = { Setup().apply(block).getApp() }
+        app = { Setup(firebaseAppName).apply(block).getApp() }
     }
 
     @Deprecated(message = "Use 'setup' instead", level = DeprecationLevel.WARNING)
@@ -52,7 +53,7 @@ class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
         this.authenticate = block
     }
 
-    class Setup {
+    class Setup(private val firebaseAppName: String?) {
         var firebaseApp: FirebaseApp? = null
         var adminFile: File? = null
         var adminFileStream: InputStream? = null
@@ -63,15 +64,15 @@ class FirebaseAuthConfig(name: String?) : AuthenticationProvider.Config(name) {
             }
 
             adminFile?.let {
-                return initializeFirebase(it.inputStream())
+                return initializeFirebase(it.inputStream(), firebaseAppName)
             }
 
             adminFileStream?.let {
-                return initializeFirebase(it)
+                return initializeFirebase(it, firebaseAppName)
             }
 
             error(
-                "missing FirebaseApp app. Provide it by using 'firebaseApp' or 'adminFile' property"
+                "missing FirebaseApp instance. Provide it by using 'firebaseApp' or 'adminFile' property"
             )
         }
     }

@@ -81,3 +81,13 @@ fun AuthenticationConfig.firebase(name: String? = null, configure: FirebaseAuthC
     val provider = FirebaseAuthProvider(config)
     register(provider)
 }
+
+fun AuthenticationConfig.firebase(
+    name: String? = null,
+    firebaseAppName: String? = null,
+    configure: FirebaseAuthConfig.() -> Unit,
+) {
+    val config = FirebaseAuthConfig(name, firebaseAppName).apply(configure)
+    val provider = FirebaseAuthProvider(config)
+    register(provider)
+}

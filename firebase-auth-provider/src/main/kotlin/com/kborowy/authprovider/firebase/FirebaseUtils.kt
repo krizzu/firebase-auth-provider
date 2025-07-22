@@ -23,7 +23,10 @@ import com.google.firebase.auth.FirebaseAuthException
 import java.io.InputStream
 import org.slf4j.LoggerFactory
 
-internal fun initializeFirebase(adminFileStream: InputStream): FirebaseApp {
+internal fun initializeFirebase(
+    adminFileStream: InputStream,
+    firebaseAppName: String?,
+): FirebaseApp {
     val options =
         FirebaseOptions.builder().run {
             val credentials = GoogleCredentials.fromStream(adminFileStream)
@@ -31,7 +34,8 @@ internal fun initializeFirebase(adminFileStream: InputStream): FirebaseApp {
             build()
         }
 
-    return FirebaseApp.initializeApp(options)
+    return if (firebaseAppName != null) FirebaseApp.initializeApp(options, firebaseAppName)
+    else FirebaseApp.initializeApp(options)
 }
 
 internal suspend fun FirebaseApp.authenticateToken(token: String): FirebaseToken? {

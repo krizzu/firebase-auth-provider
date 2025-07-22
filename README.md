@@ -11,7 +11,6 @@ Ktor authentication provider for Firebase Auth module.
 
 ![maven central latest](https://img.shields.io/maven-central/v/com.kborowy/firebase-auth-provider?label=Latest%20version&color=green)
 
-
 ```kotlin
 repositories {
     mavenCentral()
@@ -33,8 +32,7 @@ install(Authentication) {
         realm = "My Server"
 
         setup {
-            // see configuration below for other options
-            firebaseApp = FirebaseApp.getInstance()
+            // required, see configuration below 
         }
 
         validate { token ->
@@ -46,32 +44,40 @@ install(Authentication) {
 
 ## Configuration
 
-### Initialization Options
+The authentication provider requires initialization of a FirebaseApp instance. You can either:
 
-The provider requires Firebase initialization through the `setup` DSL block. You must provide one of these configuration
-options:
+1. Provide an existing FirebaseApp instance, or
 
-- **Existing FirebaseApp instance** (reuse an already initialized Firebase application)
+2. Initialize a new instance using a service account file
 
-- **Service account JSON file** (path to your Firebase admin SDK credentials file)
+### Existing FirebaseApp instance
 
-- **Service account InputStream** (stream containing your service account credentials)
-
+Provide a pre-configured FirebaseApp instance:
 
 ```kotlin
-firebase("fb") {
+firebase("auth-firebase") {
     setup {
         firebaseApp = FirebaseApp.getInstance()
+    }
+}
+```
 
-        // OR
+### Initialize FirebaseApp with admin file
+
+Provide a service account JSON file OR an `InputStream` containing the service account credentials.
+Optionally specify a `firebaseAppName` to identify your Firebase instance.
+
+```kotlin
+firebase(name = "auth-firebase", firebaseAppName = "my-fb-app") {
+    setup {
+        // Choose one initialization method:
 
         adminFile = File("path/to/admin/file.json")
-
         // OR
-
         adminFileStream = myFile.inputStream()
     }
 }
+
 ```
 
 ### Authentication Parameters
