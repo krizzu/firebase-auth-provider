@@ -1,14 +1,16 @@
 # Firebase Auth Provider
 
-[![Kotlin](https://img.shields.io/badge/kotlin-2.2.0-blue.svg?logo=kotlin)](http://kotlinlang.org)
-[![Ktor](https://img.shields.io/badge/ktor-3.2.2-blue.svg?logo=ktor)](https://ktor.io/)
-[![Maven Central Version](https://img.shields.io/maven-central/v/com.kborowy/firebase-auth-provider?logo=apachemaven&link=https%3A%2F%2Fcentral.sonatype.com%2Fartifact%2Fcom.kborowy%2Ffirebase-auth-provider)](https://central.sonatype.com/artifact/com.kborowy/firebase-auth-provider)
-[![GitHub Release](https://img.shields.io/github/v/release/krizzu/firebase-auth-provider?display_name=release&logo=github)](https://github.com/krizzu/firebase-auth-provider/releases)
-[![GitHub License](https://img.shields.io/badge/license-Apache%20License%202.0-blue.svg?style=flat)](http://www.apache.org/licenses/LICENSE-2.0)
+![Kotlin version](https://img.shields.io/badge/kotlin-2.2.0-blue?logo=kotlin)
+![Ktor version](https://img.shields.io/badge/ktor-3.2.2-red?logo=ktor)
+![License](https://img.shields.io/github/license/krizzu/firebase-auth-provider)
+![Maven Central](https://img.shields.io/maven-central/v/com.kborowy/firebase-auth-provider)
 
 Ktor authentication provider for Firebase Auth module.
 
 ## Installation
+
+![maven central latest](https://img.shields.io/maven-central/v/com.kborowy/firebase-auth-provider?label=Latest%20version&color=green)
+
 
 ```kotlin
 repositories {
